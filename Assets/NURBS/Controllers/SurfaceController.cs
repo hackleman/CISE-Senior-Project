@@ -7,13 +7,14 @@ using System.Text;
 using System.Linq;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Burst;
 
 public class SurfaceController : MonoBehaviour {
     [SerializeField] protected SurfaceData data;
-    [SerializeField] protected Material mat;
+    [SerializeField] protected Material material;
     [SerializeField] protected Vector2Int subdivision;
     public SurfaceData Data { get => data; set { data = value; } }
     public Surface surface { get; protected set; }
@@ -23,6 +24,13 @@ public class SurfaceController : MonoBehaviour {
     protected MeshFilter   filter;
     protected NativeArray<Vector3> vertices;
     public GameObject controlPoint;
+    bool visibility = true;
+
+
+    public void Awake()
+    {
+        KeyboardController.onVisibilityInput += ToggleVisibility;
+    }
 
     public void DrawSurface() 
     {
@@ -48,6 +56,7 @@ public class SurfaceController : MonoBehaviour {
     {
         surface.Dispose();
         vertices.Dispose();
+        KeyboardController.onVisibilityInput -= ToggleVisibility;
     }
 
     private void SetSurfaceData() 
@@ -61,7 +70,7 @@ public class SurfaceController : MonoBehaviour {
 
         foreach (Vector3 point in surfacePoints)
         {
-            cpList.Add(new ControlPoint(new Vector3((float)point[0], (float)point[1] - yOffset, (float)point[2]), 1f));
+            cpList.Add(new ControlPoint(new Vector3((float)(point[0] * 0.5f), (float)(point[1] - yOffset) * 0.5f, (float)(point[2] * 0.5f)), 1f));
         }
 
         data =  new SurfaceData(
@@ -182,7 +191,28 @@ public class SurfaceController : MonoBehaviour {
         this.mesh.RecalculateTangents();
         this.mesh.RecalculateBounds();
 
-        this.rendr.material = mat;
+        this.rendr.material = material;
         this.filter.mesh = mesh;
+    }
+    
+    void ToggleVisibility()
+    {
+            if (!this.visibility)
+            {
+                this.visibility = true;
+
+                foreach (Transform child in transform)
+                {
+                    child.gameObject.SetActive(true);
+                }
+            } else
+            {
+                this.visibility = false;
+
+                foreach (Transform child in transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
     }
 }

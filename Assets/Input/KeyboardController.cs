@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.InputSystem;
 
     public class KeyboardController : InputController
     {
@@ -11,47 +11,17 @@ using UnityEngine;
         public delegate void EscapeInputHandler();
         public static event EscapeInputHandler onEscapeInput;
 
+        public delegate void VisibilityInputHandler();
+
+        public static event VisibilityInputHandler onVisibilityInput;
+
+
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKey(KeyCode.W))
+            if(Keyboard.current.leftCtrlKey.isPressed)
             {
-                onMoveInput?.Invoke(Vector3.up);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                onMoveInput?.Invoke(-Vector3.up);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                onMoveInput?.Invoke(-Vector3.right);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                onMoveInput?.Invoke(Vector3.right);
-            }
-
-            if (Input.GetKey(KeyCode.E))
-            {
-                onRotateInput?.Invoke(-1f);
-            }
-            if (Input.GetKey(KeyCode.Q))
-            {
-                onRotateInput?.Invoke(1f);
-            }
-
-            if (Input.GetKey(KeyCode.Z))
-            {
-                onMoveInput?.Invoke(Vector3.forward);
-            }
-            if (Input.GetKey(KeyCode.X))
-            {
-                onMoveInput?.Invoke(-Vector3.forward);
-            }
-
-            if(Input.GetKey(KeyCode.Escape))
-            {
-                onEscapeInput?.Invoke();
+                onVisibilityInput?.Invoke();
             }
 
         }

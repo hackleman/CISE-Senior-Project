@@ -12,7 +12,7 @@ public static class SceneLoader
 
 public enum SceneName
 {
-    MenuMain,
-    Level,
+    Menu,
+    Demo,
     LevelEnd
 }

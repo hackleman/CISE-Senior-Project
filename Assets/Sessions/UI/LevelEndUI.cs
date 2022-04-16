@@ -6,11 +6,11 @@ public class LevelEndUI : MonoBehaviour
 {
     public void RestartButtonPressed()
     {
-        SceneLoader.LoadScene(SceneName.Level);
+        SceneLoader.LoadScene(SceneName.Demo);
     }
 
     public void MenuButtonPressed()
     {
-        SceneLoader.LoadScene(SceneName.MenuMain);
+        SceneLoader.LoadScene(SceneName.Menu);
     }
 }

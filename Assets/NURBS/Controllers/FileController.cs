@@ -17,6 +17,7 @@ public class FileController : MonoBehaviour {
 
     private void Awake()
     {
+        Debug.Log("Awake?");
         LevelManager.OnLevelStart += StartDemo;
     }
 
