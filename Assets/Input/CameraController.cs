@@ -31,14 +31,14 @@ public class CameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        KeyboardController.onMoveInput += UpdateFrameMove;
-        KeyboardController.onRotateInput += UpdateFrameRotate;
+        //KeyboardController.onMoveInput += UpdateFrameMove;
+        //KeyboardController.onRotateInput += UpdateFrameRotate;
     }
 
     private void OnDisable()
     {
-        KeyboardController.onMoveInput -= UpdateFrameMove;
-        KeyboardController.onRotateInput -= UpdateFrameRotate;
+        //KeyboardController.onMoveInput -= UpdateFrameMove;
+        //KeyboardController.onRotateInput -= UpdateFrameRotate;
     }
 
     private void UpdateFrameMove(Vector3 movement)

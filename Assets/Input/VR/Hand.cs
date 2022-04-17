@@ -10,13 +10,13 @@ public class Hand : MonoBehaviour
 {
     [SerializeField] private ActionBasedController controller;
     [SerializeField] private float followSpeed = 30f;
-    [SerializeField] private float rotateSpeed = 100f;
+    [SerializeField] private float rotateSpeed = 10f;
 
     [SerializeField] private Vector3 positionOffset;
     [SerializeField] private Vector3 rotationOffset;
 
     [SerializeField] private Transform palm;
-    [SerializeField] float reachDistance = 0.1f, joinDistance = 0.05f;
+    [SerializeField] float reachDistance = 0.025f, joinDistance = 0.025f;
     [SerializeField] private LayerMask grabbableLayer;
 
     private Transform _followTarget;
@@ -27,8 +27,15 @@ public class Hand : MonoBehaviour
     private Transform _grabPoint;
     private List<FixedJoint> joints = new List<FixedJoint>();
 
+    Animator animator;
+    private float triggerTarget;
+    private float triggerCurrent;
+    public float animationSpeed;
+
     private void Start()
     {
+        animator = GetComponent<Animator>();
+
         _followTarget = controller.gameObject.transform;
         _body = GetComponent<Rigidbody>();
         _body.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
@@ -46,6 +53,7 @@ public class Hand : MonoBehaviour
     private void Update()
     {
         PhysicsMove();
+        AnimateHand();
     }
 
     private void PhysicsMove()
@@ -58,6 +66,17 @@ public class Hand : MonoBehaviour
         var q = _followTarget.rotation * Quaternion.Inverse(_body.rotation);
         q.ToAngleAxis(out float angle, out Vector3 axis);
         _body.angularVelocity = angle * axis * Mathf.Deg2Rad * rotateSpeed;
+    }
+
+    void AnimateHand()
+    {
+        triggerTarget = controller.activateAction.action.ReadValue<float>();
+
+        if (triggerCurrent != triggerTarget)
+        {
+            triggerCurrent = Mathf.MoveTowards(triggerCurrent, triggerTarget, Time.deltaTime * animationSpeed);
+            animator.SetFloat("Trigger", triggerCurrent);
+        }
     }
 
     private void Release(InputAction.CallbackContext obj)
@@ -91,7 +110,7 @@ public class Hand : MonoBehaviour
         if (_isGrabbing || _heldObjects.Any()) return;
 
         Collider[] colliders = Physics.OverlapSphere(palm.position, reachDistance, grabbableLayer);
-        if (colliders.Length < 1 || colliders.Length > 4) return;
+        if (colliders.Length < 1 || colliders.Length > 5) return;
 
         foreach (Collider collider in colliders)
         {
