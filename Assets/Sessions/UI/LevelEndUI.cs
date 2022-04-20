@@ -13,4 +13,9 @@ public class LevelEndUI : MonoBehaviour
     {
         SceneLoader.LoadScene(SceneName.Menu);
     }
+
+    public void ExitButtonPressed()
+    {
+        Application.Quit();
+    }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
     public class KeyboardController : InputController
@@ -14,6 +15,11 @@ using UnityEngine.InputSystem;
         // Update is called once per frame
         void Update()
         {
+            if(Keyboard.current.escapeKey.isPressed)
+            {
+                onEscapeInput?.Invoke();
+            }
+
             if(Keyboard.current.leftCtrlKey.isPressed)
             {
                 onVisibilityInput?.Invoke();

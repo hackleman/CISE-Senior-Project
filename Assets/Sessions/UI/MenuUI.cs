@@ -9,4 +9,14 @@ public class MenuUI : MonoBehaviour
     {
         SceneLoader.LoadScene(SceneName.Demo);
     }
+
+    public void SelectButtonPressed()
+    {
+        SceneLoader.LoadScene(SceneName.LevelSelect);
+    }
+
+    public void ExitButtonPressed()
+    {
+        Application.Quit();
+    }
 }

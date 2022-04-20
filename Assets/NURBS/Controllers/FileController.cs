@@ -9,15 +9,15 @@ using UnityEngine;
 
 public class FileController : MonoBehaviour {
     public GameObject mesh;
-    public string fileHandle;
+    public static string fileHandle;
     public static Vector3 minBound = Vector3.zero;
+    public MeshController meshController;
 
     [DllImport("mylib")]
     public static extern int process_mesh(string file);
 
     private void Awake()
     {
-        Debug.Log("Awake?");
         LevelManager.OnLevelStart += StartDemo;
     }
 
@@ -25,9 +25,9 @@ public class FileController : MonoBehaviour {
     {
         fileHandle = file;
 
-        process_mesh("Assets/Tests/" + file + ".obj");
+        process_mesh("Assets/Resources/" + fileHandle + ".obj");
 
-        string data = await FileToString(file);
+        string data = await FileToString(fileHandle);
 
         List<List<Vector3>> surfaceData = ParseFileData(data);
 
@@ -40,6 +40,8 @@ public class FileController : MonoBehaviour {
 
             controller.DrawSurface();
         }
+
+        meshController?.RenderControlMesh();
     }
 
     void OnDestroy() 

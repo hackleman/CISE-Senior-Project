@@ -1,13 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.IO;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Burst;
@@ -48,7 +42,6 @@ public class SurfaceController : MonoBehaviour {
 
         CreateMesh();
         DrawControlPoints();
-
         mesh.triangles = mesh.triangles.Reverse().ToArray();
     }
 
@@ -70,7 +63,11 @@ public class SurfaceController : MonoBehaviour {
 
         foreach (Vector3 point in surfacePoints)
         {
-            cpList.Add(new ControlPoint(new Vector3((float)(point[0] * 0.5f), (float)(point[1] - yOffset) * 0.5f, (float)(point[2] * 0.5f)), 1f));
+            cpList.Add(new ControlPoint(new Vector3(
+                    (float)(point[0] * 0.5f), 
+                    (float)(point[1] - yOffset) * 0.5f, 
+                    (float)(point[2] * 0.5f)
+                ), 1f));
         }
 
         data =  new SurfaceData(

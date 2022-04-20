@@ -14,5 +14,6 @@ public enum SceneName
 {
     Menu,
     Demo,
-    LevelEnd
+    LevelEnd,
+    LevelSelect
 }
